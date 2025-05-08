@@ -1,0 +1,32 @@
+[[mgr.prepend_keymap]]
+on   = [ "g", "w" ]
+run  = "cd ~/work"
+desc = "Go to work directory"
+
+[[mgr.prepend_keymap]]
+on   = [ "g", "l" ]
+run  = "cd ~/.local"
+
+[[mgr.prepend_keymap]]
+on   = "<C-s>"
+run  = 'shell "$SHELL" --block --confirm'
+desc = "Open shell here"
+
+[[mgr.prepend_keymap]]
+on   = "<C-Down>"
+run  = 'arrow 5'
+
+[[mgr.prepend_keymap]]
+on   = "<C-Up>"
+run  = 'arrow -5'
+
+
+[[mgr.prepend_keymap]]
+on   = [ "c", "m" ]
+run  = "plugin chmod"
+desc = "Chmod on selected files"
+
+[[input.prepend_keymap]]
+on   = "<Esc>"
+run  = "close"
+desc = "Cancel input"
