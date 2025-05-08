@@ -1,0 +1,12 @@
+[[plugin.prepend_fetchers]]
+id   = "git"
+name = "*"
+run  = "git"
+
+[[plugin.prepend_fetchers]]
+id   = "git"
+name = "*/"
+run  = "git"
+
+[preview]
+ueberzug_offset = [-0.5, 1, 0.0, 0.0]
