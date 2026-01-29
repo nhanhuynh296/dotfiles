@@ -1,0 +1,46 @@
+Host *
+    # Don't allow private keys to be used unless explicitly
+    # referenced to be used by this file.
+    IdentitiesOnly yes
+
+Host bitbucket.org
+    HostName altssh.bitbucket.org
+    Port 443
+    IdentityFile ~/.ssh/id_ed25519
+
+Host altssh.bitbucket.org
+    # Allows submodules which are fully referenced to use
+    # the correct key.
+    Port 443
+    User git
+    IdentityFile ~/.ssh/id_ed25519
+
+Host github.com
+    HostName ssh.github.com
+    Port 443
+    User git
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/id_ed25519
+
+Host mac
+    HostName NZL-VXWTR6DFCY.local
+    User Nathan.Huynhfisherpaykel.com
+
+Host desk
+    Hostname 172.28.70.194
+    User pi
+    IdentityFile ~/.ssh/id_rsa_field-test
+
+Host kitchen
+    Hostname 172.28.65.243
+    User pi
+    #PasswordAuthentication yes
+    #PubkeyAuthentication=no
+    #PreferredAuthentications=password
+
+Host nuc
+    Hostname 172.28.71.92
+    User nathan
+    PasswordAuthentication yes
+    #PubkeyAuthentication=no
+    #PreferredAuthentications=password

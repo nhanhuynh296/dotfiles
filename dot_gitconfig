@@ -1,0 +1,32 @@
+[user]
+    name = Nathan Huynh
+    email = nathan.huynh@fisherpaykel.com
+	signingkey = ~/.ssh/id_ed25519
+
+[url "https://github.com/fisherpaykelpd"]
+    insteadOf = https://bitbucket.org/fpapd
+    insteadof = https://github.com/geappliances
+
+[url "ssh://git@ssh.github.com:443/fisherpaykelpd"]
+    insteadOf = ssh://git@altssh.bitbucket.org:443/fpapd
+    insteadOf = ssh://git@bitbucket.org/fpapd
+    # Optionally handle aliases, although you might do this through your `.ssh/config` instead.
+    insteadOf = bb:fpapd
+    insteadOf = gh:fpapd
+    insteadOf = ssh://git@github.com/geappliances
+    insteadOf = ssh://git@ssh.github.com:443/geappliances
+    insteadOf = https://github.com/fisherpaykelpd
+
+[gpg]
+	format = ssh
+[commit]
+	gpgsign = true
+[status]
+	submoduleSummary = true
+[safe]
+	directory = *
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

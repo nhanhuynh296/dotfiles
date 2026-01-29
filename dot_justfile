@@ -1,0 +1,35 @@
+default:
+    @just --choose
+
+[working-directory('/home/nathan-huynh/work/test-box-io')]
+hijack_testbox:
+    uv sync
+    uv run /home/nathan-huynh/work/cooking-test-automation/modules/test_box_io/test_box_io_interactive.py --hijack
+
+[working-directory('/home/nathan-huynh/work/test-box-io')]
+reset_testbox:
+    echo {{home_dir()}}
+    uv sync
+    uv run /home/nathan-huynh/work/cooking-test-automation/modules/test_box_io/test_box_io_interactive.py
+    # python3 $HOME/testbox_reset.py
+
+kill port:
+    sudo fuser -k "{{ port }}/tcp"
+
+update:
+    sudo apt update && sudo apt upgrade && sudo apt autoremove && sudo apt autoclean
+    uv tool upgrade --all
+    npm update -g
+
+[working-directory('/home/nathan-huynh/work/cook-ui-tft-backend-simulator')]
+run_backend:
+    uv sync
+    uv run main.py
+
+run_appium:
+    xdg-open http://127.0.0.1:4723/inspector
+    appium --use-plugins=inspector
+
+
+view FILE:
+    cat {{FILE}} | fzf --tail 100000 --tac --no-sort
