@@ -30,3 +30,7 @@ desc = "Chmod on selected files"
 on   = "<Esc>"
 run  = "close"
 desc = "Cancel input"
+
+[[mgr.prepend_keymap]]
+on   = "<A-Enter>"
+run  = 'open --interactive'
