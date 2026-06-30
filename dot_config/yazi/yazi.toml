@@ -16,14 +16,15 @@ vim = [
     { run = "vim %s", block = true }
 ]
 explorer = [
-	{ run = "xdg-open %s1", orphan = true, desc = "Explorer" },
+	{ run = "xdg-open %s1", orphan = true, block = false, desc = "Explorer" },
 ]
 ide = [
-	{ run = "zed %s1", orphan = true, desc = "Zed" },
+	{ run = "zed %s1", orphan = true, block = false, desc = "Zed" },
 ]
 
 [open]
 prepend_rules = [
-    { mime = "folder/*", use = ["ide", "explorer"] },
-    { mime = "text/*", use = ["vim", "ide"] },
+    { mime = "folder/*", use = ["explorer", "ide"] },
+    { mime = "text/*", use = ["ide", "vim"] },
+    { mime = "application/*", use = ["ide", "vim"] },
 ]
