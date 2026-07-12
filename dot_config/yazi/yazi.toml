@@ -25,6 +25,6 @@ ide = [
 [open]
 prepend_rules = [
     { mime = "folder/*", use = ["explorer", "ide"] },
-    { mime = "text/*", use = ["ide", "vim"] },
-    { mime = "application/*", use = ["ide", "vim"] },
+    { mime = "text/*", use = ["vim", "ide"] },
+    { mime = "application/*", use = ["vim", "ide" ] },
 ]

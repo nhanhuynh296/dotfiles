@@ -1,3 +1,2 @@
 #!/bin/zsh
-
-ya pkg install
+ya pkg upgrade
