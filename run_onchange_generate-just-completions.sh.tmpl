@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Re-runs only when `just`'s version changes: {{ output "just" "--version" | trim }}
+
+mkdir -p "$HOME/.oh-my-zsh/custom/completions"
+just --completions zsh > "$HOME/.oh-my-zsh/custom/completions/_just"
+rm -f "$HOME"/.zcompdump-*
+
+echo "Regenerated just zsh completion"
