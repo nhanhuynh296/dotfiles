@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+{{ if eq .environment "dev" -}}
+if command -v ueberzugpp &> /dev/null; then
+    echo "ueberzugpp already installed"
+    exit 0
+fi
+
+case "$(uname -s)" in
+    Darwin)
+        if command -v brew &> /dev/null; then
+            brew install jstkdng/programs/ueberzugpp
+        else
+            echo "Homebrew not found - install manually: brew install jstkdng/programs/ueberzugpp"
+        fi
+        ;;
+    Linux)
+        . /etc/os-release
+        obs_dir=""
+        case "$ID" in
+            ubuntu) obs_dir="xUbuntu_${VERSION_ID}" ;;
+            debian) obs_dir="Debian_${VERSION_ID%%.*}" ;;
+            fedora) obs_dir="Fedora_${VERSION_ID}" ;;
+        esac
+
+        if [ -n "$obs_dir" ] && command -v apt &> /dev/null; then
+            echo "deb http://download.opensuse.org/repositories/home:/justkidding/${obs_dir}/ /" | sudo tee /etc/apt/sources.list.d/home_justkidding.list
+            curl -fsSL "https://download.opensuse.org/repositories/home:justkidding/${obs_dir}/Release.key" | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_justkidding.gpg > /dev/null
+            sudo apt update
+            sudo apt install -y ueberzugpp
+        elif [ -n "$obs_dir" ] && command -v dnf &> /dev/null; then
+            sudo dnf config-manager --add-repo "https://download.opensuse.org/repositories/home:justkidding/${obs_dir}/home:justkidding.repo"
+            sudo dnf install -y ueberzugpp
+        else
+            echo "No OBS package for this distro ($ID $VERSION_ID) - build manually: https://github.com/jstkdng/ueberzugpp#building"
+        fi
+        ;;
+esac
+{{- else -}}
+echo "skipping ueberzugpp - dev-only tool, no display server to feed on a headless box"
+{{- end }}

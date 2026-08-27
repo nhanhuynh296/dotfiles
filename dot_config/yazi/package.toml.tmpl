@@ -1,9 +1,4 @@
 [[plugin.deps]]
-use = "yazi-rs/plugins:git"
-rev = "39aaf6d"
-hash = "88e56a64b7ce7c4314427452343fef17"
-
-[[plugin.deps]]
 use = "yazi-rs/plugins:chmod"
 rev = "39aaf6d"
 hash = "f0c8c378184d5f8abd1b095a443d336d"
@@ -12,8 +7,10 @@ hash = "f0c8c378184d5f8abd1b095a443d336d"
 use = "yazi-rs/plugins:full-border"
 rev = "39aaf6d"
 hash = "7b625412411be411153886894d9acaf"
+{{- if eq .environment "dev" }}
 
 [[flavor.deps]]
 use = "yazi-rs/flavors:catppuccin-macchiato"
 rev = "0f9204b"
 hash = "67f2240fd9c98f21714527a24cd672f8"
+{{- end }}

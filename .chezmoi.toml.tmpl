@@ -1,0 +1,19 @@
+{{- $environment := output "sh" "-c" `
+  if [ "$(uname -s)" = "Darwin" ]; then
+    echo dev
+    exit 0
+  fi
+  code=$(curl -fsS --max-time 1 -o /dev/null -w '%{http_code}' http://169.254.169.254/ 2>/dev/null || echo 000)
+  if [ "$code" != "000" ]; then
+    echo prod
+    exit 0
+  fi
+  if [ -z "${DISPLAY:-}" ] && [ -z "${WAYLAND_DISPLAY:-}" ] && ! systemctl get-default 2>/dev/null | grep -q graphical; then
+    echo prod
+  else
+    echo dev
+  fi
+` | trim -}}
+
+[data]
+    environment = {{ $environment | quote }}
