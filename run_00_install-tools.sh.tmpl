@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "chezmoi environment: {{ .environment }}"
+
+if ! command -v eget &> /dev/null; then
+    echo "installing eget"
+    mkdir -p "$HOME/.local/bin"
+    (cd /tmp && curl -fsSL https://zyedidia.github.io/eget.sh | sh && mv eget "$HOME/.local/bin/eget")
+fi
+export PATH="$HOME/.local/bin:$PATH"
+
+repos=(
+    junegunn/fzf
+    sxyazi/yazi
+{{- if eq .environment "dev" }}
+    casey/just
+{{- end }}
+)
+
+for repo in "${repos[@]}"; do
+    echo "Installing/updating: $repo"
+    case "$repo" in
+        sxyazi/yazi)
+            # yazi ships gnu+musl and zip+deb variants on Linux, which makes eget
+            # prompt interactively; musl avoids the glibc version eget would
+            # otherwise pick (e.g. too new for Amazon Linux 2023's glibc). The
+            # archive also bundles the `ya` companion binary alongside `yazi`,
+            # which eget's default heuristic would otherwise skip.
+            if [ "$(uname -s)" = "Linux" ]; then
+                eget "$repo" --to "$HOME/.local/bin" --upgrade-only --asset musl --asset zip -f '*/ya*' --all
+            else
+                eget "$repo" --to "$HOME/.local/bin" --upgrade-only -f '*/ya*' --all
+            fi
+            ;;
+        *)
+            eget "$repo" --to "$HOME/.local/bin" --upgrade-only
+            ;;
+    esac
+done
