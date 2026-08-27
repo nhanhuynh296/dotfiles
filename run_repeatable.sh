@@ -1,3 +1,3 @@
 #!/bin/zsh
-rm -rf ~/.config/yazi/plugins/*
-ya pkg upgrade
+#rm -rf ~/.config/yazi/plugins/*
+ya pkg upgrade --discard
