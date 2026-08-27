@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+echo "chezmoi environment: {{ .environment }}"
+
 if ! command -v eget &> /dev/null; then
     echo "installing eget"
     mkdir -p "$HOME/.local/bin"
