@@ -9,7 +9,11 @@ function precmd() {
     local elapsed=$(( EPOCHREALTIME - _cmd_start ))
     local -i s=$(( elapsed ))
     local -i ms=$(( elapsed * 1000 % 1000 ))
-    RPROMPT="%F{cyan}${s}.$(printf '%03d' $ms)s%f"
+    # ${(l:3::0:)ms} zero-pads in-shell; printf would fork on every prompt.
+    RPROMPT="%F{cyan}${s}.${(l:3::0:)ms}s%f"
     unset _cmd_start
+  else
+    # No command ran (empty Enter, Ctrl-C) -- don't leave a stale duration pinned.
+    RPROMPT=''
   fi
 }
