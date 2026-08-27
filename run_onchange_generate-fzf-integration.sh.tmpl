@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Re-runs only when fzf's version changes: {{ output "sh" "-c" "fzf --version 2>/dev/null || echo not-installed" | trim }}
+export PATH="$HOME/.local/bin:$PATH"
+
+# Re-runs only when fzf's version changes: {{ output "sh" "-c" "PATH=\"$HOME/.local/bin:$PATH\" fzf --version 2>/dev/null || echo not-installed" | trim }}
 
 mkdir -p "$HOME/.cache/fzf"
 fzf --zsh > "$HOME/.cache/fzf/integration.zsh"
