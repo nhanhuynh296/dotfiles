@@ -3,7 +3,7 @@
     echo dev
     exit 0
   fi
-  code=$(curl -fsS --max-time 1 -o /dev/null -w '%{http_code}' http://169.254.169.254/ 2>/dev/null || echo 000)
+  code=$(curl -fsS --max-time 1 -o /dev/null -w '%{http_code}' http://169.254.169.254/ 2>/dev/null)
   if [ "$code" != "000" ]; then
     echo prod
     exit 0
