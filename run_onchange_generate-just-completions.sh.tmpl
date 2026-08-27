@@ -2,7 +2,7 @@
 set -euo pipefail
 
 {{- if eq .environment "dev" }}
-# Re-runs only when `just`'s version changes: {{ output "just" "--version" | trim }}
+# Re-runs only when `just`'s version changes: {{ output "sh" "-c" "just --version 2>/dev/null || echo not-installed" | trim }}
 
 mkdir -p "$HOME/.oh-my-zsh/custom/completions"
 just --completions zsh > "$HOME/.oh-my-zsh/custom/completions/_just"
