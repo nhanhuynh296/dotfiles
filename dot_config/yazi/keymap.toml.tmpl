@@ -12,16 +12,16 @@ on   = [ "g", "s" ]
 run  = "cd ~/.ssh"
 
 [[mgr.prepend_keymap]]
-on   = "<C-s>"
+{{ if eq .chezmoi.os "darwin" }}on   = "<A-s>"{{ else }}on   = "<C-s>"{{ end }}
 run  = 'shell "$SHELL" --block --confirm'
 desc = "Open shell here"
 
 [[mgr.prepend_keymap]]
-on   = "<C-Down>"
+{{ if eq .chezmoi.os "darwin" }}on   = "<A-Down>"{{ else }}on   = "<C-Down>"{{ end }}
 run  = 'arrow 5'
 
 [[mgr.prepend_keymap]]
-on   = "<C-Up>"
+{{ if eq .chezmoi.os "darwin" }}on   = "<A-Up>"{{ else }}on   = "<C-Up>"{{ end }}
 run  = 'arrow -5'
 
 
