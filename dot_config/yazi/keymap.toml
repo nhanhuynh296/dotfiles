@@ -8,6 +8,10 @@ on   = [ "g", "l" ]
 run  = "cd ~/.local"
 
 [[mgr.prepend_keymap]]
+on   = [ "g", "s" ]
+run  = "cd ~/.ssh"
+
+[[mgr.prepend_keymap]]
 on   = "<C-s>"
 run  = 'shell "$SHELL" --block --confirm'
 desc = "Open shell here"
