@@ -1,0 +1,3 @@
+{{- if not (or (lookPath "claude") (stat (joinPath .chezmoi.homeDir ".claude")) (stat (joinPath .chezmoi.homeDir ".claude.json"))) }}
+.claude/CLAUDE.md
+{{- end }}
