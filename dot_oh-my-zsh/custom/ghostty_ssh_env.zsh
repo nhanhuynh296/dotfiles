@@ -12,7 +12,7 @@ typeset -gA GHOSTTY_ENV_BG=(
     dev  '#00293A'
 )
 
-_ghostty_configured_bg() {
+__ghostty_configured_bg() {
     local bg
     bg=$(ghostty +show-config 2>/dev/null | awk -F' = ' '/^background = /{print $2; exit}')
     print -r -- "${bg:-#000000}"
@@ -25,24 +25,37 @@ _ghostty_configured_bg() {
 # enough: Ghostty's deferred hook would clobber it a moment later. Instead,
 # (re)apply our wrapper both now and from our own precmd hook, positioned
 # to run after Ghostty's so we always wrap whatever it ends up installing.
-_ghostty_ssh_env_apply() {
-    # $_ghostty_ssh_env_marker is an exact snapshot of the ssh() body we
+#
+# Names here use a double-underscore prefix (not single) because tools that
+# snapshot shell function state (e.g. Claude Code's non-interactive shells)
+# filter out single-underscore names as zsh completion functions (_git,
+# _ssh, ...) and would silently drop these, leaving ssh() calling a helper
+# that no longer exists.
+__ghostty_ssh_env_apply() {
+    # $__ghostty_ssh_env_marker is an exact snapshot of the ssh() body we
     # last installed. If the live ssh() no longer matches it, something
     # else (Ghostty's deferred init) has replaced it since — capture that
     # as our new upstream. Comparing by snapshot instead of grepping for
     # an identifier keeps this correct even if the function body changes.
-    if (( $+functions[ssh] )) && [[ "$functions[ssh]" != "$_ghostty_ssh_env_marker" ]]; then
-        functions[_ghostty_ssh_env_upstream]=$functions[ssh]
-    elif ! (( $+functions[_ghostty_ssh_env_upstream] )); then
-        _ghostty_ssh_env_upstream() { command ssh "$@" }
+    if (( $+functions[ssh] )) && [[ "$functions[ssh]" != "$__ghostty_ssh_env_marker" ]]; then
+        functions[__ghostty_ssh_env_upstream]=$functions[ssh]
+    elif ! (( $+functions[__ghostty_ssh_env_upstream] )); then
+        __ghostty_ssh_env_upstream() { command ssh "$@" }
     fi
 
     ssh() {
         emulate -L zsh
         setopt local_options no_glob_subst
 
+        # Fall back to plain ssh if the upstream helper is ever missing
+        # (e.g. a shell that only restored ssh() and not our helpers).
+        if ! (( $+functions[__ghostty_ssh_env_upstream] )); then
+            command ssh "$@"
+            return
+        fi
+
         if [[ -z $GHOSTTY_RESOURCES_DIR ]]; then
-            _ghostty_ssh_env_upstream "$@"
+            __ghostty_ssh_env_upstream "$@"
             return
         fi
 
@@ -70,29 +83,29 @@ _ghostty_ssh_env_apply() {
         done
 
         if [[ -z $env ]]; then
-            _ghostty_ssh_env_upstream "$@"
+            __ghostty_ssh_env_upstream "$@"
             return
         fi
 
-        local orig_bg="$(_ghostty_configured_bg)"
+        local orig_bg="$(__ghostty_configured_bg)"
         print -n "\e]11;${GHOSTTY_ENV_BG[$env]}\a"
         {
-            _ghostty_ssh_env_upstream "$@"
+            __ghostty_ssh_env_upstream "$@"
         } always {
             print -n "\e]11;${orig_bg}\a"
         }
     }
 
-    typeset -g _ghostty_ssh_env_marker=$functions[ssh]
+    typeset -g __ghostty_ssh_env_marker=$functions[ssh]
 }
 
-_ghostty_ssh_env_apply
+__ghostty_ssh_env_apply
 
-_ghostty_ssh_env_precmd_once() {
-    _ghostty_ssh_env_apply
-    precmd_functions=(${precmd_functions:#_ghostty_ssh_env_precmd_once})
+__ghostty_ssh_env_precmd_once() {
+    __ghostty_ssh_env_apply
+    precmd_functions=(${precmd_functions:#__ghostty_ssh_env_precmd_once})
 }
 typeset -ag precmd_functions
-if (( ! ${precmd_functions[(Ie)_ghostty_ssh_env_precmd_once]} )); then
-    precmd_functions+=(_ghostty_ssh_env_precmd_once)
+if (( ! ${precmd_functions[(Ie)__ghostty_ssh_env_precmd_once]} )); then
+    precmd_functions+=(__ghostty_ssh_env_precmd_once)
 fi
