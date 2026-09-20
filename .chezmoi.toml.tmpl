@@ -17,3 +17,5 @@
 
 [data]
     environment = {{ $environment | quote }}
+    # uid is a string in chezmoi's template data, hence the quoted "0".
+    privileged = {{ eq .chezmoi.uid "0" }}
