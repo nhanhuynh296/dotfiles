@@ -1,3 +1,7 @@
+# Me
+- Email: read `git config user.email`.
+- Stack: Python, AWS, LAMP (Linux/Apache/MySQL/PHP).
+
 # Communication
 - ASD-STE100 everywhere: chat, code comments, commits, docs.
 - Report for a split-second read: lead with an action verb; meaning first, then concision, then grammar. Substance only, at the length the content needs. Data in tables.
@@ -9,6 +13,10 @@
 
 # Reasoning
 - Ground every claim in actual data: read the file, run the command, check the docs. Mark anything you could not check as unverified.
+
+- For client specific knowledge, refer to my Obsidian notes at `~/Documents/ObsidianVault/Client`.
+# Shell
+- Bash tool runs zsh, with `grep` wrapped to ugrep. Pass multi-flag args as arrays (`L=(--label a --label b)`, `"${L[@]}"`), quote words that start with `=`, search repos with `git grep`.
 
 # Code
 - Reuse existing functions, constants, helpers; match the codebase's API shape (param order, return structure) and layering. Add a new abstraction only for a real second caller or when the codebase pattern calls for it.
