@@ -9,3 +9,7 @@ alias rsync="rsync -auh --info=progress2 --exclude '.venv' --exclude '__pycache_
 # alias off prod hosts (client data) and off root shells.
 alias cc='claude --allow-dangerously-skip-permissions'
 {{- end }}
+# Inside kitty, kitten ssh applies per-host colors from ~/.config/kitty/ssh.conf.
+if [[ -n $KITTY_WINDOW_ID ]]; then
+    alias ssh='kitten ssh'
+fi

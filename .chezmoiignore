@@ -1,3 +1,6 @@
 {{- if not (or (lookPath "claude") (stat (joinPath .chezmoi.homeDir ".claude")) (stat (joinPath .chezmoi.homeDir ".claude.json"))) }}
 .claude/CLAUDE.md
 {{- end }}
+{{- if not (or (lookPath "kitty") (stat (joinPath .chezmoi.homeDir ".local/kitty.app"))) }}
+.config/kitty
+{{- end }}
