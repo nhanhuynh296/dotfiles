@@ -1,6 +1,6 @@
 require("full-border"):setup {
-	-- Available values: ui.Border.PLAIN, ui.Border.ROUNDED
-	set = ui.Border.ROUNDED,
+	-- Available values: "plain", "rounded"
+	set = "rounded",
 }
 
 Status:children_add(function(self)
