@@ -10,13 +10,11 @@
 - State facts plainly. Praise only when I ask for your judgement.
 - Ask when my intent is unclear; a wrong guess costs me more than a question.
 - Claude Code: ask every decision with `AskUserQuestion` (full option descriptions). Call `mcp__ccd_turn__wrap_up` with `recap` only, no `ask` or `actions`: its box hides my usage bar, and its buttons hide the message a click sends.
+- If the task are not trivial, or likely to be a back and forth with Nathan, start it using subagents. The interacting session will be a pilot that should route user request to appropriate subagent, the pilot should decide the scope and complexity and use the appropriate model (Opus/Sonnet/Haiku).
 
 # Reasoning
 - Ground every claim in actual data: read the file, run the command, check the docs. Mark anything you could not check as unverified.
-
-- For client specific knowledge, refer to my Obsidian notes at `~/Documents/ObsidianVault/Client`.
-# Shell
-- Bash tool runs zsh, with `grep` wrapped to ugrep. Pass multi-flag args as arrays (`L=(--label a --label b)`, `"${L[@]}"`), quote words that start with `=`, search repos with `git grep`.
+- If I mention a client name without context, read `/home/nathan/Documents/ObsidianVault/Client/CLAUDE.md` first. It maps names and aliases to client folders. Each client folder has `CLAUDE.md` and/or `CLIENT.md` as general knowledge.
 
 # Code
 - Reuse existing functions, constants, helpers; match the codebase's API shape (param order, return structure) and layering. Add a new abstraction only for a real second caller or when the codebase pattern calls for it.
