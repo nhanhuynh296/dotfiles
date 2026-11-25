@@ -1,0 +1,47 @@
+[preview]
+ueberzug_offset = [-0.5, 1, 0.0, 0.0]
+
+[opener]
+vim = [
+    { run = "vim %s", block = true }
+]
+{{- if eq .environment "dev" }}
+explorer = [
+	{ run = "xdg-open %s1", orphan = true, block = false, desc = "Explorer" },
+]
+ide = [
+	{ run = "zed %s1", orphan = true, block = false, desc = "Zed" },
+]
+default = [
+	{ run = "xdg-open %s1", orphan = true, block = false, desc = "Default app" },
+]
+{{- end }}
+
+[open]
+prepend_rules = [
+{{- if eq .environment "dev" }}
+    { mime = "folder/*", use = ["explorer", "ide"] },
+    { mime = "text/*", use = ["vim", "ide"] },
+    # Text-like application/* types: editor. Must stay above application/*.
+    { mime = "application/json", use = ["vim", "ide"] },
+    { mime = "application/x-ndjson", use = ["vim", "ide"] },
+    { mime = "application/xml", use = ["vim", "ide"] },
+    { mime = "application/yaml", use = ["vim", "ide"] },
+    { mime = "application/x-yaml", use = ["vim", "ide"] },
+    { mime = "application/toml", use = ["vim", "ide"] },
+    { mime = "application/javascript", use = ["vim", "ide"] },
+    { mime = "application/x-shellscript", use = ["vim", "ide"] },
+    { mime = "application/x-sh", use = ["vim", "ide"] },
+    { mime = "application/x-php", use = ["vim", "ide"] },
+    { mime = "application/x-httpd-php", use = ["vim", "ide"] },
+    { mime = "application/sql", use = ["vim", "ide"] },
+    { mime = "application/x-perl", use = ["vim", "ide"] },
+    { mime = "application/x-ruby", use = ["vim", "ide"] },
+    # Other application/* (pdf, office, archives, ...): system default app.
+    { mime = "application/*", use = ["default", "vim", "ide"] },
+{{- else }}
+    # Headless: no GUI apps, open everything in vim.
+    { mime = "text/*", use = ["vim"] },
+    { mime = "application/*", use = ["vim"] },
+{{- end }}
+]
